@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from updates.views import update_detail_json_view
+from updates import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', update_detail_json_view,)
+    path('CBW/', views.JsonResponseExample.as_view() ),
+    path('', views.update_detail_json_view,)
 ]
