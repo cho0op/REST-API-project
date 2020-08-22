@@ -19,6 +19,7 @@ from updates import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('CBW/', views.JsonResponseExample.as_view() ),
+    path('updates/detail/', views.UpdateDetailView.as_view()),
+    path('updates/', views.UpdateListView.as_view()),
     path('', views.update_detail_json_view,)
 ]
