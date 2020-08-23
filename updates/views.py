@@ -29,14 +29,9 @@ class UpdateDetailView(View):
     def get(self, request, **kwargs):
         obj = Update.objects.get(id=1)
         json_data = obj.serialize()
-        print(json_data)
+        update_data = json.loads(json_data)
+        print(update_data)
         return HttpResponse(json_data, content_type="application/json")
-        # data = {
-        #     "content": obj.content,
-        #     "username": obj.user
-        # }
-        # json_data = json.dumps(data)
-        # return HttpResponse(json_data, content_type="application/json")
 
 
 class UpdateListView(View):
@@ -44,4 +39,3 @@ class UpdateListView(View):
         json_data = Update.objects.all().serialize()
         print(json_data)
         return HttpResponse(json_data, content_type="application/json")
-        # return JsonResponse(data, safe=False)

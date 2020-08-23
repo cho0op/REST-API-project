@@ -1,3 +1,5 @@
+import json
+
 from django.core.serializers import serialize
 from django.db import models
 from django.conf import settings
@@ -9,12 +11,16 @@ def upload_path(instance, filename):
 
 class UpdateQuerySet(models.QuerySet):
     def serialize(self):
-        return serialize("json", self)
+        values_list = list((self.values("user", 'content', 'img')))
+        return json.dumps(values_list)
 
 
 class UpdateManager(models.Manager):
     def get_queryset(self):
         return UpdateQuerySet(self.model, using=self._db)
+
+    # def serialize(self):
+    #     return self.get_queryset().serialize()
 
 
 class Update(models.Model):
@@ -28,4 +34,12 @@ class Update(models.Model):
 
     def __str__(self):
         return self.content or ""
+
+    def serialize(self):
+        data = {
+            "user": self.user.username,
+            "content": self.content,
+            "img": "asd"
+        }
+        return json.dumps(data)
 # Create your models here.
