@@ -11,7 +11,7 @@ def upload_path(instance, filename):
 
 class UpdateQuerySet(models.QuerySet):
     def serialize(self):
-        values_list = list((self.values("user", 'content', 'img')))
+        values_list = list((self.values("user", 'content', 'img', 'id')))
         return json.dumps(values_list)
 
 
@@ -36,10 +36,16 @@ class Update(models.Model):
         return self.content or ""
 
     def serialize(self):
+        try:
+            img_path = self.img.path
+        except ValueError:
+            img_path = "NO_IMAGE"
+        print(img_path)
         data = {
+            "id": self.id,
             "user": self.user.username,
             "content": self.content,
-            "img": "asd"
+            "img": img_path,
         }
         return json.dumps(data)
 # Create your models here.
