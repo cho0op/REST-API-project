@@ -27,11 +27,9 @@ def create_update():
     }
     r = requests.post(BASE_URL + END_POINT, data=data)
     print(r.status_code)
-    print(r.headers)
-    print(r.json())
     if r.status_code == requests.codes.ok:
         return r.json()
-    return r.text
+
 
 
 print(create_update())

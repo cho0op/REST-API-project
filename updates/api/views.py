@@ -12,16 +12,16 @@ class UpdateListAPIView(CSRFExemptMixin, View):
         qs = Update.objects.all().serialize()
         return HttpResponse(qs, content_type="application/json")
 
+    def post(self, *args, **kwargs):
+        data = {
+            "message": "post method"
+        }
+        json_data = json.dumps(data)
+        return HttpResponse(json_data, content_type="application/json")
+
 
 class UpdateDetailAPIView(CSRFExemptMixin, View):
     def get(self, request, _id, *args, **kwargs):
         obj = Update.objects.get(id=_id)
         json_data = obj.serialize()
-        return HttpResponse(json_data, content_type="application/json")
-
-    def post(self, request, _id, *args, **kwargs):
-        data = {
-            "message": "ooops"
-        }
-        json_data = json.dumps(data)
         return HttpResponse(json_data, content_type="application/json")
