@@ -6,5 +6,5 @@ app_name = 'updates_url'
 
 urlpatterns = [
     path('', views.UpdateListAPIView.as_view()),
-    path('<int:_id>/', views.UpdateDetailAPIView.as_view())
+    path('<int:update_id>/', views.UpdateDetailAPIView.as_view())
 ]

@@ -1,7 +1,6 @@
 import json
 import requests
 
-
 BASE_URL = "http://127.0.0.1:8000/"
 END_POINT = "api/updates/"
 
@@ -23,13 +22,13 @@ def get_update(update_id):
 def create_update():
     data = {
         "user": 1,
-        "content": "New update"
+        "content": ""
     }
     r = requests.post(BASE_URL + END_POINT, data=data)
     print(r.status_code)
     if r.status_code == requests.codes.ok:
         return r.json()
-
+    return r.text
 
 
 print(create_update())
