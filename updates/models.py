@@ -43,7 +43,7 @@ class Update(models.Model):
         print(img_path)
         data = {
             "id": self.id,
-            "user": self.user.username,
+            "user": self.user.id,
             "content": self.content,
             "img": img_path,
         }

@@ -34,8 +34,7 @@ def create_update():
 
 def put_update(update_id):
     data = {
-        # "user": 1,
-        "content": "update content"
+        "content": "update 3 updated (2)"
     }
     r = requests.put(BASE_URL + END_POINT + str(update_id) + "/", data=json.dumps(data))
     if r.status_code == requests.codes.ok:
@@ -50,4 +49,4 @@ def delete_update(update_id):
     return r.text
 
 
-print(put_update(2))
+print(put_update(23))

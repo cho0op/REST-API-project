@@ -67,6 +67,7 @@ class UpdateDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         print(new_data.items())
         for key, value in new_data.items():
             old_data[key] = value
+
         print(old_data)
         updated_data = old_data
         update_form = UpdateForm(updated_data, instance=obj)
@@ -76,7 +77,6 @@ class UpdateDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
             json_data = json.dumps({"message": f"update with id={update_id} was updated"})
             return self.render_response(json_data)
         if update_form.errors:
-            print(update_form.errors)
             json_data = json.dumps(update_form.errors)
             return self.render_response(json_data)
 
