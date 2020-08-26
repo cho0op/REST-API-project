@@ -55,7 +55,7 @@ def delete_list_update():
         "content": "updated in list view 25"
     }
     json_data = json.dumps(data)
-    r = requests.put(BASE_URL + END_POINT, data=json_data)
+    r = requests.get(BASE_URL + END_POINT, data=json_data)
     if r.status_code == requests.codes.ok:
         return r.json()
     return r.text
