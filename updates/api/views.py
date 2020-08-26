@@ -63,10 +63,12 @@ class UpdateDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
 
     def delete(self, request, update_id, *args, **kwargs):
         obj = self.get_object(update_id)
+        if obj is None:
+            json_data = json.dumps({"message": f"there is no update with id {update_id}"})
+            return self.render_response(json_data, status=404)
         obj.delete()
         data = {
             "message": f"object with id {update_id} was deleted"
         }
         json_data = json.dumps(data)
         return self.render_response(json_data)
-
