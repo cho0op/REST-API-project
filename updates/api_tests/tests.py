@@ -49,4 +49,17 @@ def delete_update(update_id):
     return r.text
 
 
-print(put_update(23))
+def delete_list_update():
+    data = {
+        "id": 25,
+        "content": "updated in list view 25"
+    }
+    json_data = json.dumps(data)
+    r = requests.put(BASE_URL + END_POINT, data=json_data)
+    if r.status_code == requests.codes.ok:
+        return r.json()
+    return r.text
+
+
+print(delete_list_update())
+# print(put_update(23))
