@@ -24,6 +24,9 @@ class Status(models.Model):
 
     objects = StatusManager
 
+    def __str__(self):
+        return self.content
+
     class Meta:
         verbose_name = "status"
         verbose_name_plural = "statuses"
