@@ -19,5 +19,6 @@ from updates.api import urls as api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/updates/', include(api_urls))
+    path('api/updates/', include(api_urls)),
+    path('api/status/', include('status.api.urls'))
 ]
