@@ -14,14 +14,29 @@ class StatusListAPIView(generics.ListAPIView):
     def get_queryset(self):
         qs = Status.objects.all()
         query = self.request.GET.get("q")
-        qs = qs.filter(content__icontains=query)
-        print(query)
+        if query is not None:
+            qs = qs.filter(content__icontains=query)
         return qs
 
     # def get(self, request, format=None):
     #     qs = Status.objects.all()
     #     serializer = StatusSerializer(qs, many=True)
     #     return Response(serializer.data)
+
+
+class StatusCreateAPIView(generics.CreateAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
+
+
+class StatusDetailAPIView(generics.RetrieveAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
+    lookup_field = "id"  # or use 'pk' in url path
 
 
 class StatusListSearchAPIView(APIView):
