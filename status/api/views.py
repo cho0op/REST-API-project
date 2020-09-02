@@ -1,12 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import mixins
 
 from status.models import Status
 from status.api.serializers import StatusSerializer
 
 
-class StatusListAPIView(generics.ListAPIView):
+class StatusListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     authentication_classes = []
     permission_classes = []
     serializer_class = StatusSerializer
@@ -18,10 +19,8 @@ class StatusListAPIView(generics.ListAPIView):
             qs = qs.filter(content__icontains=query)
         return qs
 
-    # def get(self, request, format=None):
-    #     qs = Status.objects.all()
-    #     serializer = StatusSerializer(qs, many=True)
-    #     return Response(serializer.data)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 class StatusCreateAPIView(generics.CreateAPIView):
@@ -31,12 +30,32 @@ class StatusCreateAPIView(generics.CreateAPIView):
     queryset = Status.objects.all()
 
 
-class StatusDetailAPIView(generics.RetrieveAPIView):
+class StatusDetailAPIView(mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.RetrieveAPIView):
     authentication_classes = []
     permission_classes = []
     serializer_class = StatusSerializer
     queryset = Status.objects.all()
     lookup_field = "id"  # or use 'pk' in url path
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+class StatusUpdateAPIView(generics.UpdateAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
+
+
+class StatusDeleteAPIView(generics.DestroyAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
 
 
 class StatusListSearchAPIView(APIView):
