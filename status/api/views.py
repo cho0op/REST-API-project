@@ -8,6 +8,8 @@ from rest_framework import mixins
 from status.models import Status
 from status.api.serializers import StatusSerializer
 
+from .utils import is_json
+
 import json
 
 
@@ -19,6 +21,7 @@ class StatusAPIView(generics.ListAPIView,
     authentication_classes = []
     permission_classes = []
     serializer_class = StatusSerializer
+    passed_id = None
 
     def get_queryset(self):
         qs = Status.objects.all()
@@ -29,11 +32,10 @@ class StatusAPIView(generics.ListAPIView,
 
     def get_object(self):
         request = self.request
-        passed_id = request.GET.get("id", None)
         queryset = self.get_queryset()
         obj = None
-        if passed_id is not None:
-            obj = get_object_or_404(queryset, id=passed_id)
+        if self.passed_id is not None:
+            obj = get_object_or_404(queryset, id=self.passed_id)
             self.check_object_permissions(request, obj)
         return obj
 
@@ -41,19 +43,36 @@ class StatusAPIView(generics.ListAPIView,
         return self.create(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        passed_id = request.GET.get("id", None)
-        if passed_id is not None:
+        url_passed_id = request.GET.get("id", None)
+        json_data = {}
+        body_ = request.body.decode()
+        if is_json(body_):  # to check if it's json to prevent JSONDecodeError: Expecting value: line 1 column 1
+            json_data = json.loads(body_)
+        data_passed_id = json_data.get("id")
+        self.passed_id = url_passed_id or data_passed_id or None
+        if self.passed_id is not None:
             return self.retrieve(request, *args, **kwargs)  # call get_object
         return super().get(self, request, *args, **kwargs)  # to save old get() method
 
     def put(self, request, *args, **kwargs):
+        url_passed_id = request.GET.get("id", None)
+        json_data = {}
+        body_ = request.body.decode()
+        if is_json(body_):  # to check if it's json to prevent JSONDecodeError: Expecting value: line 1 column 1
+            json_data = json.loads(body_)
+        data_passed_id = json_data.get("id")
+        self.passed_id = url_passed_id or data_passed_id or None
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        passed_id = request.GET.get("id", None)
-        if passed_id is not None:
-            return self.destroy(request, *args, **kwargs)  
-        return super().get(self, request, *args, **kwargs)
+        url_passed_id = request.GET.get("id", None)
+        json_data = {}
+        body_ = request.body.decode()
+        if is_json(body_):  # to check if it's json to prevent JSONDecodeError: Expecting value: line 1 column 1
+            json_data = json.loads(body_)
+        data_passed_id = json_data.get("id")
+        self.passed_id = url_passed_id or data_passed_id or None
+        return self.destroy(request, *args, **kwargs)
 
 
 class StatusCreateAPIView(generics.CreateAPIView):
