@@ -13,6 +13,19 @@ from .utils import is_json
 import json
 
 
+class StatusAPIDetailView(generics.RetrieveAPIView, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
 class StatusAPIView(generics.ListAPIView,
                     mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
